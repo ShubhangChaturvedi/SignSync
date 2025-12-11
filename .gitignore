@@ -1,0 +1,16 @@
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.venv/
+.DS_Store
+Thumbs.db
+
+# Keep models, ignore data folder contents
+!asl_model.joblib
+!labels.pkl
+asl_data/*
+!asl_data/
