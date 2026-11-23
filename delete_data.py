@@ -1,4 +1,3 @@
-# delete_data.py — Safely delete collected images
 import os
 import shutil
 
