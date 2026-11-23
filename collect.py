@@ -1,4 +1,3 @@
-# collect.py → Fixed & super smooth landmark collector
 import cv2
 import mediapipe as mp
 import csv
@@ -19,7 +18,6 @@ CSV_FILE = "asl_data/landmarks.csv"
 if not os.path.exists("asl_data"):
     os.makedirs("asl_data")
 
-# Create header if file doesn't exist
 if not os.path.exists(CSV_FILE):
     with open(CSV_FILE, "w", newline="") as f:
         writer = csv.writer(f)
