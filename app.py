@@ -1,4 +1,3 @@
-# app.py → SignSync with REAL VOICE (just run pip install pyttsx3 first)
 import cv2
 import mediapipe as mp
 import numpy as np
@@ -9,7 +8,6 @@ import threading
 import warnings
 warnings.filterwarnings("ignore")
 
-# Text-to-speech (works offline!)
 tts = pyttsx3.init()
 tts.setProperty('rate', 150)
 
@@ -79,7 +77,6 @@ while cap.isOpened():
 
     key = cv2.waitKey(1) & 0xFF
 
-    # Hold SPACE → add letter on release
     if key == 32:
         space_held = True
     elif space_held and key != 32:
@@ -89,32 +86,27 @@ while cap.isOpened():
         history.clear()
         conf_history.clear()
 
-    if key == 8:  # Backspace
+    if key == 8:
         current_word = current_word[:-1]
-    if key == ord('c'):  # Clear all
+    if key == ord('c'):
         current_word = ""
 
     if key == ord('s') and current_word:
         threading.Thread(target=lambda: (tts.say(current_word), tts.runAndWait()), daemon=True).start()
 
-    #PERFECT "SignSync" TITLE (top-right, anti-aliased, never cut off)
     title_text = "SignSync"
     font = cv2.FONT_HERSHEY_DUPLEX
     font_scale = 1
     thickness = 1
-    color = (220, 100, 255)  # Beautiful purple
+    color = (220, 100, 255)
 
-    # Get text size correctly
     (text_width, text_height), baseline = cv2.getTextSize(title_text, font, font_scale, thickness)
 
-    # Auto position: 40px from right edge, 90px from top
     x = w - text_width - 40
     y = 90
 
-    # Draw shadow (optional – looks premium)
     cv2.putText(frame, title_text, (x + 4, y + 4), font, font_scale, (0, 0, 0), thickness + 2, cv2.LINE_AA)
 
-    # Draw main text (smooth & beautiful)
     cv2.putText(frame, title_text, (x, y), font, font_scale, color, thickness, cv2.LINE_AA)
 
     if locked_letter:
