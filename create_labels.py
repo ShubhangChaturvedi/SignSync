@@ -1,4 +1,3 @@
-# create_labels.py — run this ONCE after collecting all letters
 import pandas as pd
 from sklearn.preprocessing import LabelEncoder
 import joblib
