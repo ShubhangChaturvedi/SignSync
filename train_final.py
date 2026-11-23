@@ -1,8 +1,7 @@
-# train_final.py → FULLY WORKING with A–Z letters + 99% accuracy
 import pandas as pd
 import numpy as np
 from xgboost import XGBClassifier
-from sklearn.preprocessing import LabelEncoder   # ← THIS WAS MISSING
+from sklearn.preprocessing import LabelEncoder
 import joblib
 
 CSV_FILE = "asl_data/landmarks.csv"
@@ -11,7 +10,6 @@ df = pd.read_csv(CSV_FILE)
 
 print(f"Loaded {len(df)} samples → {df['label'].nunique()} letters:", sorted(df['label'].unique()))
 
-# ------------------- FEATURES (71 total) -------------------
 def make_features(df_data):
     X = df_data.values.astype(np.float32)
     n = X.shape[0]
@@ -50,14 +48,12 @@ print("Creating features...")
 X = make_features(df.drop('label', axis=1))
 y_raw = df['label']
 
-# ←←← THIS IS THE ONLY FIX NEEDED ←←←
 print("Encoding labels A–Z → numbers...")
 le = LabelEncoder()
-y = le.fit_transform(y_raw)          # ← XGBoost needs numbers, not letters
+y = le.fit_transform(y_raw)
 
 print(f"Final dataset: {X.shape}")
 
-# ------------------- TRAIN XGBoost -------------------
 print("Training model (10–30 seconds)...")
 model = XGBClassifier(
     n_estimators=1000,
@@ -70,11 +66,10 @@ model = XGBClassifier(
     eval_metric='mlogloss'
 )
 
-model.fit(X, y)    # ← now y is numbers → no error!
+model.fit(X, y)
 
-# Save model + label encoder
 joblib.dump(model, "asl_model.joblib")
-joblib.dump(le, "labels.pkl")        # ← Save the encoder, not model.classes_
+joblib.dump(le, "labels.pkl")
 
 acc = model.score(X, y) * 100
 print(f"\nMODEL READY! Training accuracy: {acc:.2f}%")
